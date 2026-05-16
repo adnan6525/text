@@ -1,75 +1,75 @@
 D. Prediction Pipeline
-The prediction pipeline is implemented in firewall/predict.py. It performs the following operations:
-1. Receives URL, request content, and HTTP method.
-2. Applies rule-based signature checking.
-3. Extracts numerical features from the request.
-4. Converts URL and content into a character-level token sequence.
-5. Passes the sequence and numerical features to the trained Bi-LSTM model.
-6. Generates label, confidence score, attack probability, extracted features, and detection method.
-If the rule-based layer detects a known attack signature, the system immediately returns an attack label with high confidence. If no rule is matched, the Bi-LSTM model performs the final classification.
-E. Flask WAF Prototype
-The Flask prototype is implemented in firewall/app.py. It exposes the following routes:
+The prediction pipeline is programmed in the file firewall/predict.py. Carries out the following operations:
+Accepts input of URL, request content and HTTP method.
+3. Implements signature verification using rules.
+3. Fetches numerical characteristics from the request.
+4. Transforms URL/content to a token sequence of chars.
+Passes the sequence and numerical features to the trained Bi-LSTM model.
+6. Creates label, confidence score, attack probability, extracted features and detection method.
+If the rule-based layer discovers a known attack signature, it will return an attack label with a high level of confidence immediately. Bi-LSTM model is used for the last classification if no rule is matched.
+The prototype was for E. Flask.The prototype was of E. Flask.
+The Flask prototype can be found in firewall/app.py. Reads the following routes:
 
 <table>
 
-The /inspect endpoint accepts JSON input in the following format:
+This /inspect endpoint requires a JSON input of the following format:
 <code> 
-If the request is malicious, the WAF returns a blocked response with HTTP status code 403. If the request is normal, it returns an allowed response with HTTP status code 200.
+The WAF will respond with an HTTP 403 error if the request is malicious. It will return an allowed response containing HTTP status code 200 if the request is normal.
 F. Dashboard Interface
-A browser-based dashboard is implemented using HTML, CSS, and JavaScript in:
+The web-based dashboard is created with HTML, CSS and JavaScript in:
 firewall/templates/dashboard.html
-The dashboard allows users to test HTTP requests manually. It also provides quick test buttons for normal requests, SQL injection, XSS, and path traversal examples. The dashboard displays recent request logs, including timestamp, HTTP method, URL, decision, and confidence value.
+The Dashboard provides users the ability to manually send a test HTTP request. It also includes instant test buttons for normal test, SQL injection test, XSS test and path traversal test. You can see the recent request logs on the dashboard, including the time, HTTP method, URL, decision, and confidence value.
 Figure Reference
-Fig. 3. Flask dashboard interface for testing HTTP requests and viewing WAF decisions.
+Fig. 3. Flask dashboard interface to test HTTP requests and view WAF decisions.
 Image path: firewall/templates/dashboard.html
 G. Testing
-An end-to-end test script is provided in:
+An end-to-end test script is included in:
 firewall/test_waf.py
-The test script sends normal and malicious requests to the /inspect endpoint and checks whether the WAF returns the expected decision. The test cases include normal GET requests, normal POST login, SQL injection, XSS, path traversal, and command injection payloads.
+The test script will make both "good" and "bad" requests to the /inspect endpoint and verify that the WAF makes the correct decision. Normal GET, Normal POST Login, SQL injection, XSS, Path Traversal, Command injection payloads are used in the test cases.
 H. Deployment Flow
-The WAF prototype can be started using the Flask application. Once running, users can access the dashboard and send test requests for inspection. The system logs each request and shows whether it was allowed or blocked.
-The implementation demonstrates how the trained Bi-LSTM model can be integrated into a real-time WAF environment and used for practical HTTP request inspection.
+The WAF prototype can be started using the Flask application. On running, the users can log into the dashboard and send test requests for inspection. Each request is recorded in the system and whether they were allowed or blocked are displayed.
+The implementation shows how the trained Bi-LSTM model can be deployed in a real-time WAF (web application firewall) environment and how it can be practically applied to inspect HTTP requests.
   10. RESULTS AND DISCUSSION
-The proposed Intelligent WAF is evaluated using standard binary classification metrics, including accuracy, precision, recall, F1-score, ROC-AUC, and false positive rate. The performance of the proposed Bi-LSTM model is compared with the LSTM baseline, Transformer model, and ModSecurity CRS v3.
+The proposed Intelligent WAF is assessed using typical binary classification metrics such as Accuracy, Precision, Recall, F1 score, ROC-AUC and False Positive Rate. The proposed Bi-LSTM model is compared with LSTM model, Transformer model, and the ModSecurity CRS v3.
 A. Evaluation Metrics
-The following metrics are used for performance evaluation:
-* Accuracy: Measures the overall percentage of correctly classified requests.
-* Precision: Measures how many requests classified as attacks are actually attacks.
-* Recall: Measures how many actual attacks are correctly detected.
-* F1-score: Harmonic mean of precision and recall.
-* ROC-AUC: Measures the model’s ability to distinguish between normal and attack traffic across thresholds.
-* False Positive Rate (FPR): Measures the percentage of normal requests incorrectly classified as attacks.
-For a WAF system, false positive rate is especially important because incorrectly blocking legitimate users can reduce usability and affect business operations.
+The following metrics are evaluated as a performance test:
+Accuracy - percentage of all requests that are correctly classified.
+Precision: Proportion of requests that are labeled as attacks which are actually attacks.
+Recall: Percentage of actual attacks that are correctly identified.
+A harmonic average of precision and recall.F1-score: A harmonic mean of precision and recall.
+* ROC-AUC: Evaluates the model's performance in differentiation of normal and attack traffic on thresholds.
+False Positive Rate (FPR): Percentage of false alarms from legitimate requests.
+A false positive rate is particularly critical to a WAF system as blocking legitimate users can impact usability and business processes.
 B. Model Performance Comparison
-The experimental results show that the proposed Bi-LSTM model achieves the best overall performance among all evaluated systems.
+The experimental results demonstrate that the proposed Bi-LSTM model yields the optimum overall performance out of all the systems evaluated.
 Table II
-Performance Comparison of WAF Detection Models
+WAF Detection Models: Performance Comparison.
 
 Figure Reference
-Fig. 4. Performance comparison of LSTM, Bi-LSTM, Transformer, and ModSecurity.
+Fig. 4. Benchmarking between LSTM, Bi-LSTM, Transformer and ModSecurity.
 Image path: results/plots/comparison_bar_chart.png
- C. Discussion of Results
-The proposed Bi-LSTM model achieves 96.02% accuracy, which is higher than the LSTM baseline, Transformer model, and ModSecurity CRS v3. The Bi-LSTM also achieves the highest precision of 99.53%, showing that very few normal requests are incorrectly classified as attacks. This is important for a WAF because excessive false positives can block legitimate users.
-The Bi-LSTM model achieves an F1-score of 94.92%, indicating a strong balance between precision and recall. Its ROC-AUC value of 99.50% shows that the model can effectively distinguish between normal and malicious HTTP requests across different classification thresholds.
-The LSTM baseline performs significantly lower than the proposed Bi-LSTM. This shows that single-direction sequence processing is not sufficient to capture all request patterns effectively. The Transformer model performs better than the LSTM baseline but still remains below the Bi-LSTM. This may be because the CSIC 2010 dataset is moderate in size, and the Bi-LSTM model is more effective for learning sequential character-level patterns in this dataset.
+ C. Discussion of Results:
+The proposed Bi-LSTM model gives an accuracy of 96.02%, outperforming the baseline LSTM model, the Transformer model and the ModSecurity CRS v3. The precision of the Bi-LSTM is the best at 99.53%, meaning that it has the fewest false positives of all the models. This is crucial for a WAF since too many false positives can hamper legitimate users.
+The Bi-LSTM model achieves an F1-score of 94.92%, which is a good balance between precision and recall. The model demonstrated a good performance with a ROC-AUC of 99.50%, indicating its ability to accurately separate the classes of normal and malicious traffic at all classification levels.
+The performance of the LSTM baseline is much lower compared to the proposed Bi-LSTM. This demonstrates that single-direction sequence processing is not enough to effectively capture all the request patterns. Transformer model outperforms LSTM baseline but is still less than Bi-LSTM. It can be attributed to the fact that CSIC 2010 is a moderate size dataset and the Bi-LSTM model is better suited to learning sequential character-level patterns for this dataset.
 D. False Positive Rate Analysis
-False positive rate is one of the most critical metrics for WAF evaluation. ModSecurity CRS v3 shows a false positive rate of 10.00%, while the proposed Bi-LSTM achieves only 0.30%. This represents a major improvement because the proposed model reduces unnecessary blocking of legitimate traffic.
+The false positive rate is one of the most important metrics to consider when assessing a WAF. The false positive rate of ModSecurity CRS v3 is 10.00% whereas the proposed Bi-LSTM is 0.30%. This is a significant enhancement as the proposed model minimizes the blocking of valid traffic.
 Figure Reference
-Fig. 5. False positive rate comparison between ModSecurity, LSTM, Transformer, and Bi-LSTM.
+Fig. 5. The comparison of false positive rate for ModSecurity, LSTM, Transformer, and Bi-LSTM.
 Image path: results/plots/fpr_comparison.png
-The low false positive rate indicates that the proposed model is highly precise in identifying malicious traffic while allowing normal requests. This makes the system more suitable for real-world WAF deployment, where both security and usability are important.
-E. Confusion Matrix Analysis
-The Bi-LSTM confusion matrix provides a detailed view of classification results on the test dataset.
-Bi-LSTM Test Set Results:
+The result of low false positive is that the proposed model has a high degree of accuracy in detecting malicious traffic while allowing the normal requests. This makes the system more appropriate for use in real-world WAFs where security and usability are key factors.
+The confusion matrix is used to analyze E.Confusion Matrix Analysis: E.
+The Bi-LSTM confusion matrix displays classification test results in detail.
+The result of the test set using Bi-LSTM network:
 
 <table>
 
-Only 16 normal requests are incorrectly blocked out of 5,400 normal test requests. This confirms the model’s strong ability to reduce false alarms. The model correctly detects 3,411 attack requests, showing strong attack detection capability.
+Only 16 normal requests are incorrectly blocked out of 5,400 normal test requests. This verifies the capability of the model to reduce false alarms and shows its high performance. The model has a good attack detection capability, with a correct detection rate of 3411 attack requests.
 Figure Reference
 Fig. 6. Confusion matrix of the proposed Bi-LSTM model.
 Image path: results/plots/bilstm_confusion_matrix.png
 F. ROC Curve Analysis
-The ROC curve compares the discrimination capability of the models. The proposed Bi-LSTM achieves the highest ROC-AUC score of 99.50%, followed by the Transformer model with 98.53%. This shows that both models can distinguish normal and attack traffic effectively, but the Bi-LSTM provides the best separation.
+ROC curve is used to compare the discrimination power of the models. The proposed Bi-LSTM model obtains the best ROC-AUC value of 99.50%, while the Transformer model gets 98.53%. This indicates that both models have also been able to separate the normal and attack traffic with reasonable accuracy with the highest separation achieved by Bi-LSTM.
 Figure Reference
-Fig. 7. ROC curve comparison of deep learning models.
+Fig. 7. A comparison of the ROC curve of the deep learning models.
 Image path: results/plots/roc_comparison.png
