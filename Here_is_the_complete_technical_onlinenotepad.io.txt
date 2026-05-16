@@ -1,75 +1,36 @@
-D. Prediction Pipeline
-The prediction pipeline is programmed in the file firewall/predict.py. Carries out the following operations:
-Accepts input of URL, request content and HTTP method.
-3. Implements signature verification using rules.
-3. Fetches numerical characteristics from the request.
-4. Transforms URL/content to a token sequence of chars.
-Passes the sequence and numerical features to the trained Bi-LSTM model.
-6. Creates label, confidence score, attack probability, extracted features and detection method.
-If the rule-based layer discovers a known attack signature, it will return an attack label with a high level of confidence immediately. Bi-LSTM model is used for the last classification if no rule is matched.
-The prototype was for E. Flask.The prototype was of E. Flask.
-The Flask prototype can be found in firewall/app.py. Reads the following routes:
-
-<table>
-
-This /inspect endpoint requires a JSON input of the following format:
-<code> 
-The WAF will respond with an HTTP 403 error if the request is malicious. It will return an allowed response containing HTTP status code 200 if the request is normal.
-F. Dashboard Interface
-The web-based dashboard is created with HTML, CSS and JavaScript in:
-firewall/templates/dashboard.html
-The Dashboard provides users the ability to manually send a test HTTP request. It also includes instant test buttons for normal test, SQL injection test, XSS test and path traversal test. You can see the recent request logs on the dashboard, including the time, HTTP method, URL, decision, and confidence value.
-Figure Reference
-Fig. 3. Flask dashboard interface to test HTTP requests and view WAF decisions.
-Image path: firewall/templates/dashboard.html
-G. Testing
-An end-to-end test script is included in:
-firewall/test_waf.py
-The test script will make both "good" and "bad" requests to the /inspect endpoint and verify that the WAF makes the correct decision. Normal GET, Normal POST Login, SQL injection, XSS, Path Traversal, Command injection payloads are used in the test cases.
-H. Deployment Flow
-The WAF prototype can be started using the Flask application. On running, the users can log into the dashboard and send test requests for inspection. Each request is recorded in the system and whether they were allowed or blocked are displayed.
-The implementation shows how the trained Bi-LSTM model can be deployed in a real-time WAF (web application firewall) environment and how it can be practically applied to inspect HTTP requests.
-  10. RESULTS AND DISCUSSION
-The proposed Intelligent WAF is assessed using typical binary classification metrics such as Accuracy, Precision, Recall, F1 score, ROC-AUC and False Positive Rate. The proposed Bi-LSTM model is compared with LSTM model, Transformer model, and the ModSecurity CRS v3.
-A. Evaluation Metrics
-The following metrics are evaluated as a performance test:
-Accuracy - percentage of all requests that are correctly classified.
-Precision: Proportion of requests that are labeled as attacks which are actually attacks.
-Recall: Percentage of actual attacks that are correctly identified.
-A harmonic average of precision and recall.F1-score: A harmonic mean of precision and recall.
-* ROC-AUC: Evaluates the model's performance in differentiation of normal and attack traffic on thresholds.
-False Positive Rate (FPR): Percentage of false alarms from legitimate requests.
-A false positive rate is particularly critical to a WAF system as blocking legitimate users can impact usability and business processes.
-B. Model Performance Comparison
-The experimental results demonstrate that the proposed Bi-LSTM model yields the optimum overall performance out of all the systems evaluated.
-Table II
-WAF Detection Models: Performance Comparison.
+G. Attack Type Detection Analysis
+The proposed Bi-LSTM also performs better than ModSecurity across different attack categories. The comparison includes SQL injection, XSS, path traversal, CSRF, buffer overflow, and parameter tampering.
+Table III
+Attack Type Detection Comparison
 
 Figure Reference
-Fig. 4. Benchmarking between LSTM, Bi-LSTM, Transformer and ModSecurity.
-Image path: results/plots/comparison_bar_chart.png
- C. Discussion of Results:
-The proposed Bi-LSTM model gives an accuracy of 96.02%, outperforming the baseline LSTM model, the Transformer model and the ModSecurity CRS v3. The precision of the Bi-LSTM is the best at 99.53%, meaning that it has the fewest false positives of all the models. This is crucial for a WAF since too many false positives can hamper legitimate users.
-The Bi-LSTM model achieves an F1-score of 94.92%, which is a good balance between precision and recall. The model demonstrated a good performance with a ROC-AUC of 99.50%, indicating its ability to accurately separate the classes of normal and malicious traffic at all classification levels.
-The performance of the LSTM baseline is much lower compared to the proposed Bi-LSTM. This demonstrates that single-direction sequence processing is not enough to effectively capture all the request patterns. Transformer model outperforms LSTM baseline but is still less than Bi-LSTM. It can be attributed to the fact that CSIC 2010 is a moderate size dataset and the Bi-LSTM model is better suited to learning sequential character-level patterns for this dataset.
-D. False Positive Rate Analysis
-The false positive rate is one of the most important metrics to consider when assessing a WAF. The false positive rate of ModSecurity CRS v3 is 10.00% whereas the proposed Bi-LSTM is 0.30%. This is a significant enhancement as the proposed model minimizes the blocking of valid traffic.
-Figure Reference
-Fig. 5. The comparison of false positive rate for ModSecurity, LSTM, Transformer, and Bi-LSTM.
-Image path: results/plots/fpr_comparison.png
-The result of low false positive is that the proposed model has a high degree of accuracy in detecting malicious traffic while allowing the normal requests. This makes the system more appropriate for use in real-world WAFs where security and usability are key factors.
-The confusion matrix is used to analyze E.Confusion Matrix Analysis: E.
-The Bi-LSTM confusion matrix displays classification test results in detail.
-The result of the test set using Bi-LSTM network:
+Fig. 8. Attack type detection comparison between ModSecurity and Bi-LSTM.
+Image path: results/plots/attack_type_detection.png
+The results show that the Bi-LSTM model performs better across all attack types. The improvement is especially visible for CSRF and parameter tampering, where rule-based detection may miss attack variations.
+H. Prototype Evaluation
+The Flask-based WAF prototype successfully demonstrates real-time request classification. The dashboard allows users to test normal and malicious HTTP requests and observe whether they are allowed or blocked. Example attacks such as SQL injection, XSS, path traversal, and command injection are correctly blocked by the hybrid detection pipeline.
+The prototype confirms that the trained Bi-LSTM model can be integrated with a practical WAF workflow. It also demonstrates key deployment features such as confidence reporting, request logging, and real-time block/allow decision-making.
 
-<table>
+ XI. CONCLUSION
+This project presented an Intelligent Web Application Firewall using deep learning for detecting malicious HTTP requests and zero-day-like web attack patterns. Traditional WAFs such as ModSecurity depend mainly on predefined rules and signatures, which makes them effective against known attacks but less reliable against modified, obfuscated, or previously unseen payloads. To address this limitation, the proposed system combines rule-based filtering with a Bi-LSTM deep learning model using an attention mechanism.
+The CSIC 2010 HTTP dataset was used for training and evaluation. HTTP requests were represented using character-level tokenization and eight engineered numerical features. Three deep learning models were developed and compared: LSTM baseline, Transformer, and Bi-LSTM with attention. Among these models, the proposed Bi-LSTM achieved the best performance with 96.02% accuracy, 99.53% precision, 90.72% recall, 94.92% F1-score, 99.50% ROC-AUC, and a 0.30% false positive rate.
+The results show that the Bi-LSTM model outperforms ModSecurity CRS v3, LSTM, and Transformer models in overall detection performance. The reduction in false positive rate is especially important for WAF deployment because it reduces unnecessary blocking of legitimate users. The Flask-based prototype further demonstrates that the trained model can be integrated into a real-time inspection system capable of producing block/allow decisions, confidence scores, and request logs.
+Overall, the project confirms that deep learning can improve web application firewall performance by learning attack patterns from HTTP request data. The hybrid approach provides the benefits of fast rule-based detection for known attacks and adaptive deep learning-based classification for modified or zero-day-like attack patterns.
 
-Only 16 normal requests are incorrectly blocked out of 5,400 normal test requests. This verifies the capability of the model to reduce false alarms and shows its high performance. The model has a good attack detection capability, with a correct detection rate of 3411 attack requests.
-Figure Reference
-Fig. 6. Confusion matrix of the proposed Bi-LSTM model.
-Image path: results/plots/bilstm_confusion_matrix.png
-F. ROC Curve Analysis
-ROC curve is used to compare the discrimination power of the models. The proposed Bi-LSTM model obtains the best ROC-AUC value of 99.50%, while the Transformer model gets 98.53%. This indicates that both models have also been able to separate the normal and attack traffic with reasonable accuracy with the highest separation achieved by Bi-LSTM.
-Figure Reference
-Fig. 7. A comparison of the ROC curve of the deep learning models.
-Image path: results/plots/roc_comparison.png
+
+
+
+
+XII. FUTURE SCOPE
+The proposed Intelligent Web Application Firewall demonstrates strong performance on the CSIC 2010 HTTP dataset and provides a working Flask-based prototype. However, several improvements can be made in future work to increase its real-world applicability, scalability, and robustness.
+1. Training on Real-World Traffic The current model is trained mainly on benchmark HTTP request data. Future work can include real-world web server logs and production traffic to improve generalization against modern attack patterns.
+2. Support for More Attack Categories The system can be extended to detect additional attack types such as server-side request forgery, remote code execution, file upload attacks, authentication bypass, API abuse, and bot-based attacks.
+3. Advanced Tokenization Techniques Future versions can explore word-level, subword-level, or byte-pair encoding tokenization to capture semantic patterns more effectively than simple character-level tokenization.
+4. Explainable AI for WAF Decisions Explainability methods can be added to show which parts of a request influenced the model’s decision. This would help security analysts understand why a request was blocked or allowed.
+5. Online and Incremental Learning The model can be improved with online learning so that it can adapt to new attack patterns over time without complete retraining.
+6. Adversarial Robustness Future work can test the model against adversarial payloads designed to bypass deep learning-based detection. Defensive methods can then be added to improve robustness.
+7. Cloud and Enterprise Deployment The prototype can be deployed as a reverse proxy or middleware in front of real web applications. It can also be integrated with cloud platforms, load balancers, and containerized environments.
+8. SIEM and Alert Integration The WAF can be connected with Security Information and Event Management systems to provide centralized logging, alerting, and incident response support.
+9. Latency and Performance Optimization Model compression, pruning, quantization, or ONNX conversion can be used to reduce inference time and make the WAF suitable for high-traffic production environments.
+10. Continuous Rule and Model Updating
+A future system can combine automatic rule updates with periodic model retraining so that both signature-based and learning-based components remain effective against evolving threats.
