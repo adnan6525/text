@@ -2,31 +2,31 @@
 
 [1] OWASP Foundation, “OWASP Top 10:2021,” 2021. [Online]. Available: https://owasp.org/Top10/
 
-[2] OWASP Foundation, “OWASP Core Rule Set,” 2026. [Online]. Available: https://owasp.org/www-project-modsecurity-core-rule-set/
+[2] OWASP Foundation, OWASP Core Rule Set, 2026. [Online]. Available: https://owasp.org/www-project-modsecurity-core-rule-set/
 
-[3] OWASP ModSecurity, “ModSecurity Reference Manual,” 2026. [Online]. Available: https://github.com/owasp-modsecurity/ModSecurity/wiki/Reference-Manual-%28v2.x%29
+[3] OWASP ModSecurity, “ModSecurity Reference Manual”, 2026. [Online]. Available: https://github.com/owasp-modsecurity/ModSecurity/wiki/Reference-Manual-%28v2.x%29
 
 [4] B. R. Dawadi, B. Adhikari, and D. K. Srivastava, “Deep Learning Technique-Enabled Web Application Firewall for the Detection of Web Attacks,” *Sensors*, vol. 23, no. 4, Art. no. 2073, 2023, doi: 10.3390/s23042073.
 
 [5] Y. Pan, F. Sun, Z. Teng *et al*., “Detecting web attacks with end-to-end deep learning,” *Journal of Internet Services and Applications*, vol. 10, Art. no. 16, 2019, doi: 10.1186/s13174-019-0115-x.
 
-[6] X. Kuang, M. Zhang, H. Li, G. Zhao, H. Cao, Z. Wu, and X. Wang, “DeepWAF: Detecting Web Attacks Based on CNN and LSTM Models,” in *Cyberspace Safety and Security*, Springer, 2020, pp. 121-136.
+[6] X. Kuang, M. Zhang, H. Li, G. Zhao, H. Cao, Z. Wu, X. Wang, “DeepWAF: Detecting Web Attacks Based on CNN and LSTM Models,” in Springer, Cyberspace Safety and Security, 2020, p. 121-136.
 
-[7] J. Li, Y. Fu, J. Xu, C. Ren, X. Xiang, and J. Guo, “Web Application Attack Detection Based on Attention and Gated Convolution Networks,” *IEEE Access*, vol. 8, pp. 20717-20724, 2020, doi: 10.1109/ACCESS.2019.2955674.
+[7] J. Li, Y. Fu, J. Xu, C. Ren, X. Xiang, and J. Guo, “Web Application Attack Detection Based on Attention and Gated Convolution Networks,” vol. 8, of IEEE Access, pp., 2017. 20717-20724, 2020, doi: 10.1109/ACCESS.2019.2955674.
 
 [8] A. Tekerek, “A novel architecture for web-based attack detection using convolutional neural network,” *Computers & Security*, vol. 100, Art. no. 102096, 2021, doi: 10.1016/j.cose.2020.102096.
 
 [9] T. Alma and M. L. Das, “Web Application Attack Detection using Deep Learning,” arXiv:2011.03181, 2020, doi: 10.48550/arXiv.2011.03181.
 
-[10] S. Toprak and A. G. Yavuz, “Web Application Firewall Based on Anomaly Detection using Deep Learning,” *Acta Infologica*, vol. 6, no. 2, pp. 219-244, 2022, doi: 10.26650/acin.1039042.
+[10] S. Toprak, and A. G. Yavuz, “Web Application Firewall Based on Anomaly Detection using Deep Learning,” Acta Infologica, vol. 6, no. 2, pp. 219-244, 2022, doi: 10.26650/acin.1039042.
 
-[11] W. B. Shahid, B. Aslam, H. Abbas, S. B. Khalid, and H. Afzal, “An enhanced deep learning based framework for web attacks detection, mitigation and attacker profiling,” *Journal of Network and Computer Applications*, vol. 198, Art. no. 103270, 2022, doi: 10.1016/j.jnca.2021.103270.
+11. W. B. Shahid, B. Aslam, H. Abbas, S. B. Khalid and H. Afzal, "An enhanced deep learning based framework for web attacks detection, mitigation and attacker profiling," Journal of Network and Computer Applications, vol. 198, Art. no. 103270, 2022, doi: 10.1016/j.jnca.2021.103270.
 
-[12] R. L. Alaoui and E. H. Nfaoui, “Deep Learning for Vulnerability and Attack Detection on Web Applications: A Systematic Literature Review,” *Future Internet*, vol. 14, no. 4, Art. no. 118, 2022, doi: 10.3390/fi14040118.
+[12] R. L. Alaoui and E. H. Nfaoui, “Deep Learning for Vulnerability and Attack Detection on Web Applications: A Systematic Literature Review,” Future Internet, vol. 14, no. 4, Art. no. 118, 2022, doi: 10.3390/fi14040118.
 
-[13] T. Sureda Riera, J. R. Bermejo Higuera, J. Bermejo Higuera, J. J. Martínez Herraiz, and J. A. Sicilia Montalvo, “Prevention and Fighting against Web Attacks through Anomaly Detection Technology: A Systematic Review,” *Sustainability*, vol. 12, no. 12, Art. no. 4945, 2020, doi: 10.3390/su12124945.
+T. Sureda Riera, J. R. Bermejo Higuera, J. Bermejo Higuera, J. J. Martínez Herraiz, and J. A. Sicilia Montalvo, “Prevention and Fighting against Web Attacks using Anomaly Detection Technology: A Systematic Review,” Sustainability, vol. 12, no. 12, Art. no. 4945, 2020, doi: 10.3390/su12124945.
 
-[14] R. L. Alaoui and E. H. Nfaoui, “Web attacks detection using stacked generalization ensemble for LSTMs and word embedding,” *Procedia Computer Science*, vol. 215, pp. 687-696, 2022, doi: 10.1016/j.procs.2022.12.070.
+[14] R. L. Alaoui and E. H. Nfaoui, “Web attacks detection using stacked generalization ensemble for LSTMs and word embedding,” *Procedia Computer Science*, vol. 215, pp. . 687-696, 2022, doi: 10.1016/j.procs.2022.12.070.
 
 [15] H. Sun, Y. Du, and Q. Li, “Deep Learning-Based Detection Technology for SQL Injection Research and Implementation,” *Applied Sciences*, vol. 13, no. 16, Art. no. 9466, 2023, doi: 10.3390/app13169466.
 
@@ -34,12 +34,12 @@
 
 [17] V. Babaey and H. R. Faragardi, “Detecting Zero-Day Web Attacks with an Ensemble of LSTM, GRU, and Stacked Autoencoders,” *Computers*, vol. 14, no. 6, Art. no. 205, 2025, doi: 10.3390/computers14060205.
 
-[18] A. Kim, M. Park, and D. H. Lee, “AI-IDS: Application of Deep Learning to Real-Time Web Intrusion Detection,” *IEEE Access*, vol. 8, pp. 70245-70261, 2020, doi: 10.1109/ACCESS.2020.2986882.
+[18] A. Kim, M. Park, and D. H. Lee, “AI-IDS: Application of Deep Learning to Real-Time Web Intrusion Detection,” IEEE Access, vol. 8, pp. 70245-70261, 2020, doi: 10.1109/ACCESS.2020.2986882.
 
-[19] A. Moradi Vartouni, M. Teshnehlab, and S. Sedighian Kashi, “Leveraging deep neural networks for anomaly-based web application firewall,” *IET Information Security*, vol. 13, no. 4, pp. 352-361, 2019, doi: 10.1049/iet-ifs.2018.5404.
+[19] A. Moradi Vartouni, M. Teshnehlab, and S. Sedighian Kashi, “Leveraging deep neural networks for anomaly-based web application firewall,” IET Information Security, vol. 13, no. 4, pp. 352-361, 2019, doi: 10.1049/iet-ifs.2018.5404.
 
-[20] C. Eunaicy, “Web attack detection using deep learning models,” *Materials Today: Proceedings*, vol. 62, pp. 4806-4813, 2022, doi: 10.1016/j.matpr.2022.03.348.
+[20] C. Eunaicy, “Web attack detection using deep learning models”, Materials Today: Proceedings, vol. 62, p. 4806-4813, 2022, doi: 10.1016/j.matpr.2022.03.348.
 
 [21] J. L. Leevy and T. M. Khoshgoftaar, “A survey and analysis of intrusion detection models based on CSE-CIC-IDS2018 Big Data,” *Journal of Big Data*, vol. 7, Art. no. 104, 2020, doi: 10.1186/s40537-020-00382-x.
 
-[22] A. Paszke, S. Gross, F. Massa *et al*., “PyTorch: An Imperative Style, High-Performance Deep Learning Library,” in *Proc. Advances in Neural Information Processing Systems*, 2019. [Online]. Available: https://arxiv.org/abs/1912.01703
+[22] A. Paszke, S. Gross, F. Massa and others, “PyTorch: An Imperative Style, High-Performance Deep Learning Library”, in the Proceedings of Advances in Neural Information Processing Systems, 2019. [Online]. Available: https://arxiv.org/abs/1912.01703
