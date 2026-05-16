@@ -1,36 +1,45 @@
-G. Attack Type Detection Analysis
-The proposed Bi-LSTM also outperforms ModSecurity in various attacks. The comparison includes SQL injection, XSS, path traversal, CSRF, buffer overflow, and parameter tampering.
-Table III
-Type detection comparison for attacks.
+## XIII. REFERENCES
 
-Figure Reference
-Fig. 8. ModSecurity vs Bi-LSTM Attack type detection comparison.
-Image path: results/plots/attack_type_detection.png
-The results in the table indicate that the performance of the Bi-LSTM is better in all types of attacks. The advantage becomes apparent in the case of CSRF and parameter tampering where rule-based detection can be less effective at recognising variations in the attack.
-H. Prototype Evaluation
-Request classification in real-time is successfully demonstrated by the Flask-based WAF prototype. The dashboard enables users to test the normal and malicious HTTP requests, and check what happens when they are allowed or blocked. The hybrid detection pipeline blocks example attacks like SQL injection, XSS, path traversal and command injection.
-The prototype demonstrates the feasibility of incorporating the trained Bi-LSTM model into a real-life WAF. It also displays the important deployment capabilities like confidence reporting, logging of requests and real-time decision making on blocks/allow.
+[1] OWASP Foundation, “OWASP Top 10:2021,” 2021. [Online]. Available: https://owasp.org/Top10/
 
- XI. CONCLUSION
-This project introduces an Intelligent Web Application Firewall based on deep learning to detect malicious HTTP requests and web attack patterns similar to zero-day attack. The traditional WAFs like ModSecurity rely primarily on rules and signatures, and are effective against known attacks, but have difficulties in detecting modified, obfuscated and unknown payloads. To overcome this drawback, the proposed system is based on a combination of rule-based filtering with a Bi-LSTM deep learning model with an attention mechanism.
-Training and evaluation were done using the CSIC 2010 HTTP dataset. Character level tokenisation and 8 engineered numerical features were used to represent HTTP requests. A total of three deep learning models were created and evaluated: LSTM baseline, Transformer and Bi-LSTM with attention. The proposed Bi-LSTM model gave the highest accuracy performance of 96.02%, followed by precision of 99.53%, recall of 90.72%, F1 Score of 94.92%, ROC-AUC of 99.50%, and, Finally FP Rate of 0.30% among these models.
-The results demonstrate that the Bi-LSTM model achieves the best overall performance in terms of detection performance, compared to ModSecurity CRS v3, LSTM and Transformer models. An important consideration for WAF deployment is the reduction in false positive rate, which will minimize the blocking of legitimate users. The prototype system further demonstrates that the trained model can be embedded in a real-time inspection system that can give block/allow decisions, confidence scores and request logs.
-Overall, the project shows that deep learning can improve the performance of a web application firewall by learning the patterns of attacks on the HTTP data of the application. Hybrid approach combines advantages of rapid attack detection by the rule-based classifier for known attacks with the advantages of the modified or zero-day-like attacks classification by the deep learning classifier.
+[2] OWASP Foundation, “OWASP Core Rule Set,” 2026. [Online]. Available: https://owasp.org/www-project-modsecurity-core-rule-set/
 
+[3] OWASP ModSecurity, “ModSecurity Reference Manual,” 2026. [Online]. Available: https://github.com/owasp-modsecurity/ModSecurity/wiki/Reference-Manual-%28v2.x%29
 
+[4] B. R. Dawadi, B. Adhikari, and D. K. Srivastava, “Deep Learning Technique-Enabled Web Application Firewall for the Detection of Web Attacks,” *Sensors*, vol. 23, no. 4, Art. no. 2073, 2023, doi: 10.3390/s23042073.
 
+[5] Y. Pan, F. Sun, Z. Teng *et al*., “Detecting web attacks with end-to-end deep learning,” *Journal of Internet Services and Applications*, vol. 10, Art. no. 16, 2019, doi: 10.1186/s13174-019-0115-x.
 
+[6] X. Kuang, M. Zhang, H. Li, G. Zhao, H. Cao, Z. Wu, and X. Wang, “DeepWAF: Detecting Web Attacks Based on CNN and LSTM Models,” in *Cyberspace Safety and Security*, Springer, 2020, pp. 121-136.
 
-XII. FUTURE SCOPE
-The idea of the Intelligent Web Application Firewall shows good performance on the CSIC 2010 HTTP dataset and offers a working prototype of an Intelligent Web Application Firewall using Flask. Several enhancements and extensions are suggested for future research so as to enhance its applicability, scalability and robustness in real time.
-The current model is trained primarily on benchmark data in the form of an HTTP request. Real-world web server logs and production traffic could be used in the future to further generalize against current attack patterns.
-The system can be extended to support other attack types like server-side request forgery, remote code execution, file upload attacks, authentication bypass, API abuse, and bot-based attacks.
-3. Advanced Tokenization Techniques Word-level, subword-level and byte-pair encoding tokenizations could be used in future versions to better capture semantic patterns than character-level tokenization.
-Explainable AI for WAF Decisions: Methods of explainability can be integrated to reveal which components of a request had an impact on the decision. This would make it easier for security analysts to know the reason for the security request being denied or accepted.
-Online and incremental learning: The model can be continuously improved through online learning, thus it can learn new attack patterns over time without the need for retraining the whole model.
-An adversarial payload is a future test case for the model that can evade detection through deep learning. Robustness can then be increased through the use of defensive methods.
-The prototype can run as a reverse proxy or middleware in front of the real web applications. It can also be embedded in cloud environments, load balancers and containerized environments.
-8. SIEM and Alert Integration: The WAF can integrate with SIEM systems to enable centralized logging, alerting and incident response functions.
-Efficiency can be achieved by model compression, pruning, quantization, or ONNX conversion to lower inference time and scale the WAF for high traffic production environments.
-The model algorithm is constantly updated.The model algorithm is continuously upgraded.
-A future system could integrate with automatic updates to a signature-based component, and periodically retrain the learning-based component to ensure that both are resilient against threats.
+[7] J. Li, Y. Fu, J. Xu, C. Ren, X. Xiang, and J. Guo, “Web Application Attack Detection Based on Attention and Gated Convolution Networks,” *IEEE Access*, vol. 8, pp. 20717-20724, 2020, doi: 10.1109/ACCESS.2019.2955674.
+
+[8] A. Tekerek, “A novel architecture for web-based attack detection using convolutional neural network,” *Computers & Security*, vol. 100, Art. no. 102096, 2021, doi: 10.1016/j.cose.2020.102096.
+
+[9] T. Alma and M. L. Das, “Web Application Attack Detection using Deep Learning,” arXiv:2011.03181, 2020, doi: 10.48550/arXiv.2011.03181.
+
+[10] S. Toprak and A. G. Yavuz, “Web Application Firewall Based on Anomaly Detection using Deep Learning,” *Acta Infologica*, vol. 6, no. 2, pp. 219-244, 2022, doi: 10.26650/acin.1039042.
+
+[11] W. B. Shahid, B. Aslam, H. Abbas, S. B. Khalid, and H. Afzal, “An enhanced deep learning based framework for web attacks detection, mitigation and attacker profiling,” *Journal of Network and Computer Applications*, vol. 198, Art. no. 103270, 2022, doi: 10.1016/j.jnca.2021.103270.
+
+[12] R. L. Alaoui and E. H. Nfaoui, “Deep Learning for Vulnerability and Attack Detection on Web Applications: A Systematic Literature Review,” *Future Internet*, vol. 14, no. 4, Art. no. 118, 2022, doi: 10.3390/fi14040118.
+
+[13] T. Sureda Riera, J. R. Bermejo Higuera, J. Bermejo Higuera, J. J. Martínez Herraiz, and J. A. Sicilia Montalvo, “Prevention and Fighting against Web Attacks through Anomaly Detection Technology: A Systematic Review,” *Sustainability*, vol. 12, no. 12, Art. no. 4945, 2020, doi: 10.3390/su12124945.
+
+[14] R. L. Alaoui and E. H. Nfaoui, “Web attacks detection using stacked generalization ensemble for LSTMs and word embedding,” *Procedia Computer Science*, vol. 215, pp. 687-696, 2022, doi: 10.1016/j.procs.2022.12.070.
+
+[15] H. Sun, Y. Du, and Q. Li, “Deep Learning-Based Detection Technology for SQL Injection Research and Implementation,” *Applied Sciences*, vol. 13, no. 16, Art. no. 9466, 2023, doi: 10.3390/app13169466.
+
+[16] K. Kuppa, A. Dayal, S. Gupta, A. Dua, P. Chaudhary, and S. Rathore, “ConvXSS: A deep learning-based smart ICT framework against code injection attacks for HTML5 web applications in sustainable smart city infrastructure,” *Sustainable Cities and Society*, vol. 80, Art. no. 103765, 2022, doi: 10.1016/j.scs.2022.103765.
+
+[17] V. Babaey and H. R. Faragardi, “Detecting Zero-Day Web Attacks with an Ensemble of LSTM, GRU, and Stacked Autoencoders,” *Computers*, vol. 14, no. 6, Art. no. 205, 2025, doi: 10.3390/computers14060205.
+
+[18] A. Kim, M. Park, and D. H. Lee, “AI-IDS: Application of Deep Learning to Real-Time Web Intrusion Detection,” *IEEE Access*, vol. 8, pp. 70245-70261, 2020, doi: 10.1109/ACCESS.2020.2986882.
+
+[19] A. Moradi Vartouni, M. Teshnehlab, and S. Sedighian Kashi, “Leveraging deep neural networks for anomaly-based web application firewall,” *IET Information Security*, vol. 13, no. 4, pp. 352-361, 2019, doi: 10.1049/iet-ifs.2018.5404.
+
+[20] C. Eunaicy, “Web attack detection using deep learning models,” *Materials Today: Proceedings*, vol. 62, pp. 4806-4813, 2022, doi: 10.1016/j.matpr.2022.03.348.
+
+[21] J. L. Leevy and T. M. Khoshgoftaar, “A survey and analysis of intrusion detection models based on CSE-CIC-IDS2018 Big Data,” *Journal of Big Data*, vol. 7, Art. no. 104, 2020, doi: 10.1186/s40537-020-00382-x.
+
+[22] A. Paszke, S. Gross, F. Massa *et al*., “PyTorch: An Imperative Style, High-Performance Deep Learning Library,” in *Proc. Advances in Neural Information Processing Systems*, 2019. [Online]. Available: https://arxiv.org/abs/1912.01703
