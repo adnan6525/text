@@ -1,36 +1,36 @@
 G. Attack Type Detection Analysis
-The proposed Bi-LSTM also performs better than ModSecurity across different attack categories. The comparison includes SQL injection, XSS, path traversal, CSRF, buffer overflow, and parameter tampering.
+The proposed Bi-LSTM also outperforms ModSecurity in various attacks. The comparison includes SQL injection, XSS, path traversal, CSRF, buffer overflow, and parameter tampering.
 Table III
-Attack Type Detection Comparison
+Type detection comparison for attacks.
 
 Figure Reference
-Fig. 8. Attack type detection comparison between ModSecurity and Bi-LSTM.
+Fig. 8. ModSecurity vs Bi-LSTM Attack type detection comparison.
 Image path: results/plots/attack_type_detection.png
-The results show that the Bi-LSTM model performs better across all attack types. The improvement is especially visible for CSRF and parameter tampering, where rule-based detection may miss attack variations.
+The results in the table indicate that the performance of the Bi-LSTM is better in all types of attacks. The advantage becomes apparent in the case of CSRF and parameter tampering where rule-based detection can be less effective at recognising variations in the attack.
 H. Prototype Evaluation
-The Flask-based WAF prototype successfully demonstrates real-time request classification. The dashboard allows users to test normal and malicious HTTP requests and observe whether they are allowed or blocked. Example attacks such as SQL injection, XSS, path traversal, and command injection are correctly blocked by the hybrid detection pipeline.
-The prototype confirms that the trained Bi-LSTM model can be integrated with a practical WAF workflow. It also demonstrates key deployment features such as confidence reporting, request logging, and real-time block/allow decision-making.
+Request classification in real-time is successfully demonstrated by the Flask-based WAF prototype. The dashboard enables users to test the normal and malicious HTTP requests, and check what happens when they are allowed or blocked. The hybrid detection pipeline blocks example attacks like SQL injection, XSS, path traversal and command injection.
+The prototype demonstrates the feasibility of incorporating the trained Bi-LSTM model into a real-life WAF. It also displays the important deployment capabilities like confidence reporting, logging of requests and real-time decision making on blocks/allow.
 
  XI. CONCLUSION
-This project presented an Intelligent Web Application Firewall using deep learning for detecting malicious HTTP requests and zero-day-like web attack patterns. Traditional WAFs such as ModSecurity depend mainly on predefined rules and signatures, which makes them effective against known attacks but less reliable against modified, obfuscated, or previously unseen payloads. To address this limitation, the proposed system combines rule-based filtering with a Bi-LSTM deep learning model using an attention mechanism.
-The CSIC 2010 HTTP dataset was used for training and evaluation. HTTP requests were represented using character-level tokenization and eight engineered numerical features. Three deep learning models were developed and compared: LSTM baseline, Transformer, and Bi-LSTM with attention. Among these models, the proposed Bi-LSTM achieved the best performance with 96.02% accuracy, 99.53% precision, 90.72% recall, 94.92% F1-score, 99.50% ROC-AUC, and a 0.30% false positive rate.
-The results show that the Bi-LSTM model outperforms ModSecurity CRS v3, LSTM, and Transformer models in overall detection performance. The reduction in false positive rate is especially important for WAF deployment because it reduces unnecessary blocking of legitimate users. The Flask-based prototype further demonstrates that the trained model can be integrated into a real-time inspection system capable of producing block/allow decisions, confidence scores, and request logs.
-Overall, the project confirms that deep learning can improve web application firewall performance by learning attack patterns from HTTP request data. The hybrid approach provides the benefits of fast rule-based detection for known attacks and adaptive deep learning-based classification for modified or zero-day-like attack patterns.
+This project introduces an Intelligent Web Application Firewall based on deep learning to detect malicious HTTP requests and web attack patterns similar to zero-day attack. The traditional WAFs like ModSecurity rely primarily on rules and signatures, and are effective against known attacks, but have difficulties in detecting modified, obfuscated and unknown payloads. To overcome this drawback, the proposed system is based on a combination of rule-based filtering with a Bi-LSTM deep learning model with an attention mechanism.
+Training and evaluation were done using the CSIC 2010 HTTP dataset. Character level tokenisation and 8 engineered numerical features were used to represent HTTP requests. A total of three deep learning models were created and evaluated: LSTM baseline, Transformer and Bi-LSTM with attention. The proposed Bi-LSTM model gave the highest accuracy performance of 96.02%, followed by precision of 99.53%, recall of 90.72%, F1 Score of 94.92%, ROC-AUC of 99.50%, and, Finally FP Rate of 0.30% among these models.
+The results demonstrate that the Bi-LSTM model achieves the best overall performance in terms of detection performance, compared to ModSecurity CRS v3, LSTM and Transformer models. An important consideration for WAF deployment is the reduction in false positive rate, which will minimize the blocking of legitimate users. The prototype system further demonstrates that the trained model can be embedded in a real-time inspection system that can give block/allow decisions, confidence scores and request logs.
+Overall, the project shows that deep learning can improve the performance of a web application firewall by learning the patterns of attacks on the HTTP data of the application. Hybrid approach combines advantages of rapid attack detection by the rule-based classifier for known attacks with the advantages of the modified or zero-day-like attacks classification by the deep learning classifier.
 
 
 
 
 
 XII. FUTURE SCOPE
-The proposed Intelligent Web Application Firewall demonstrates strong performance on the CSIC 2010 HTTP dataset and provides a working Flask-based prototype. However, several improvements can be made in future work to increase its real-world applicability, scalability, and robustness.
-1. Training on Real-World Traffic The current model is trained mainly on benchmark HTTP request data. Future work can include real-world web server logs and production traffic to improve generalization against modern attack patterns.
-2. Support for More Attack Categories The system can be extended to detect additional attack types such as server-side request forgery, remote code execution, file upload attacks, authentication bypass, API abuse, and bot-based attacks.
-3. Advanced Tokenization Techniques Future versions can explore word-level, subword-level, or byte-pair encoding tokenization to capture semantic patterns more effectively than simple character-level tokenization.
-4. Explainable AI for WAF Decisions Explainability methods can be added to show which parts of a request influenced the model’s decision. This would help security analysts understand why a request was blocked or allowed.
-5. Online and Incremental Learning The model can be improved with online learning so that it can adapt to new attack patterns over time without complete retraining.
-6. Adversarial Robustness Future work can test the model against adversarial payloads designed to bypass deep learning-based detection. Defensive methods can then be added to improve robustness.
-7. Cloud and Enterprise Deployment The prototype can be deployed as a reverse proxy or middleware in front of real web applications. It can also be integrated with cloud platforms, load balancers, and containerized environments.
-8. SIEM and Alert Integration The WAF can be connected with Security Information and Event Management systems to provide centralized logging, alerting, and incident response support.
-9. Latency and Performance Optimization Model compression, pruning, quantization, or ONNX conversion can be used to reduce inference time and make the WAF suitable for high-traffic production environments.
-10. Continuous Rule and Model Updating
-A future system can combine automatic rule updates with periodic model retraining so that both signature-based and learning-based components remain effective against evolving threats.
+The idea of the Intelligent Web Application Firewall shows good performance on the CSIC 2010 HTTP dataset and offers a working prototype of an Intelligent Web Application Firewall using Flask. Several enhancements and extensions are suggested for future research so as to enhance its applicability, scalability and robustness in real time.
+The current model is trained primarily on benchmark data in the form of an HTTP request. Real-world web server logs and production traffic could be used in the future to further generalize against current attack patterns.
+The system can be extended to support other attack types like server-side request forgery, remote code execution, file upload attacks, authentication bypass, API abuse, and bot-based attacks.
+3. Advanced Tokenization Techniques Word-level, subword-level and byte-pair encoding tokenizations could be used in future versions to better capture semantic patterns than character-level tokenization.
+Explainable AI for WAF Decisions: Methods of explainability can be integrated to reveal which components of a request had an impact on the decision. This would make it easier for security analysts to know the reason for the security request being denied or accepted.
+Online and incremental learning: The model can be continuously improved through online learning, thus it can learn new attack patterns over time without the need for retraining the whole model.
+An adversarial payload is a future test case for the model that can evade detection through deep learning. Robustness can then be increased through the use of defensive methods.
+The prototype can run as a reverse proxy or middleware in front of the real web applications. It can also be embedded in cloud environments, load balancers and containerized environments.
+8. SIEM and Alert Integration: The WAF can integrate with SIEM systems to enable centralized logging, alerting and incident response functions.
+Efficiency can be achieved by model compression, pruning, quantization, or ONNX conversion to lower inference time and scale the WAF for high traffic production environments.
+The model algorithm is constantly updated.The model algorithm is continuously upgraded.
+A future system could integrate with automatic updates to a signature-based component, and periodically retrain the learning-based component to ensure that both are resilient against threats.
