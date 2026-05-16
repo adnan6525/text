@@ -1,193 +1,75 @@
-The data needs to be scaled and encoded for F.For F, the data must be scaled and encoded.
-
-Features are normalized numerically to minimize the differences in the scale of the features. For instance, the numeric ranges of URL length and content length might be greater than for binary indicators like has_sql or has_xss. Normalization improves the stability of the learned patterns when training the model. The HTTP methods are encoded to numerical values to be used as input to the model.
-
-
-
-G. Preprocessed Output
-
-Once a request is preprocessed, each one is represented by two forms of input:
-
-
-
-A sequence of characters of predetermined length.
-
-Vector of 8 numerical engineered features.
-
-The classification label is a binary output, 0 for normal request, 1 for attack request. These proc
-
-
-
-8. MODEL DESIGN
-
-The suggested Intelligent WAF is based on deep learning models that identify normal and malicious HTTP requests. When the requests in the HTTP are sequential text patterns, the models that can learn sequential relationships can be used for this task. In this project, three models are designed and evaluated: LSTM baseline, Bi-LSTM with attention, and Transformer. The proposed model is Bi-LSTM with attention model due to its good overall performance.
-
-
-
-B. LSTM Explanation Model
-
-As the first sequence-learning model, LSTM is used to make a comparison. The LSTM network can be used for long-term memory to process sequential data, and is appropriate for processing the structure of HTTP request sequences on characters. This model uses an embedding layer, followed by an LSTM layer for each tokenized request. The LSTM representation is then added to the numerical feature vector and fed to fully connected layers for binary classification.
-
-
-
-The LSTM model serves as a baseline to assess the validity of the potential of bidirectional sequence processing and attention for detection.
-
-
-
-B. Proposed Bi-LSTM with Attention Model
-
-The proposed model is a Bidirectional Long Short-Term Memory (BLSTM) network with attention. A Bi-LSTM is the same as a standard LSTM but takes into account the input sequence from both forward and backward direction. This enables the model to create context of previous and subsequent characters of the HTTP request.
-
-
-
-In a malicious payload, attack signs could be at the start, center, or end of the request. These dependencies can be better modeled using a bidirectional model as opposed to a single-direction LSTM.
-
-
-
-The proposed Bi-LSTM model has the following layers:
-
-
-
-Embedding Layer
-
-
-
-The character level sequence of tokens is mapped to dense vectors. The embedding vector for each token is a 64-dimensional vector. The padding index is used to ignore padding tokens.
-
-
-
-Bidirectional LSTM Layer
-
-
-
-A two-layer Bi-LSTM is used to pass the embedded sequence through. There are 128 hidden units for each LSTM direction. Model is bi-directional, which means that the output representation will include forward and backward information.
-
-
-
-Attention Layer
-
-
-
-The attention mechanism assigns importance weights to different positions in the sequence. This will help the model to be focused on suspicious characters or substrings like SQL keywords, script tags, encoded characters, traversal patterns, and the command separators.
-
-
-
-Feature Fusion Layer
-
-
-
-The concatenated Bi-LSTM output and eight engineered numerical features are fed into the attended LSTM. This enables the model to learn sequence features and manually extract structural features.
-
-
-
-Fully Connected Classifier
-
-
-
-Input is a combined feature vector, which is passed through fully connected layers equipped with ReLU activations, batch normalization and dropouts. The last layer applies sigmoid activation function to output an attack probability that is in the range of 0-1.
-
-
-
-If the predicted probability is greater than or equal to 0.5, the request is considered an attack. If not, it is considered to be normal.
-
-
-
-C. Transformer Model
-
-In addition, a Transformer model is implemented to make a comparison. Transformer architectures employ self-attention to learn relationships among positions in a sequence. The following components are used in this project: character embeddings, positional encoding, multi-head attention, encoder layers, numerical feature fusion, and Transformer model.
-
-
-
-Although the Transformer model performs strongly, it does not outperform the Bi-LSTM model in this project. This is possibly due to the fact that the CSIC 2010 dataset is of moderate size; the Bi-LSTM model is more suitable to learn sequential request patterns from such a dataset.
-
-
-
-D. Hybrid Detection Strategy
-
-The deployed WAF is not just based on the neural model. It adopts a mixed approach:
-
-
-
-Rule-Based Layer
-
-
-
-Known attack signatures are checked first using regular expressions. These include SQL injection, XSS, path traversal and command injection patterns. If a match is identified, the request is rejected straight away.
-
-
-
-Deep Learning Layer
-
-
-
-When there is no rule matching, the request goes to the Bi-LSTM attention model. The end classification is done by model using feature of characters level and numerical characteristics of the request.
-
-
-
-Such a hybrid design enhances its usability in real-world applications as known attacks can be identified swiftly, and the Bi-LSTM allows for adaptability in scenarios involving modified or new patterns.
-
-
-
-I. Radomski, M. Jurica, and M. Tošić.M. Jurica, M. Tošić and I. Radomski.
-
-The model has 2 inputs:
-
-
-
-x_seq: A fixed length character token sequence of length 200.
-
-x_num: numerical feature vector with length 8.
-
-The model gives out a probability score:
-
-
-
-<tabel>
-
-
-
-The output of this binary classification is used by the Flask WAF prototype to make real-time decision whether or not to block the site.
-
-
-
-9. IMPLEMENTATION
-
-We are going to implement the proposed Intelligent Web Application Firewall with Python, PyTorch and Flask. The deep learning models are created and trained using PyTorch and the real-time firewall prototype is written as a Flask web application. The implementation links the trained Bi-LSTM model to an endpoint that handles the inspection of the HTTP requests, and labels the incoming request as normal or malicious.
-
-
-
-A. Technology Stack
-
-The technologies used in this project are shown in Table I.
-
-
-
-Table I
-
-
-
-The technology used in the proposed system is stackable.The proposed system utilizes a stackable technology.
-
-
-
-B. Project Structure
-
-The project has its own structure: data, models, firewall implementation, results, notebooks and report files. This organization facilitates processing, model training, model evaluation, and prototype deployment.
-
-
-
-C. Model Implementation
-
-Implementing the Bi-LSTM model is done in PyTorch. It includes two-layer bidirectional LSTM, attention layer, dropout layer, embedding layer, and fully connected classifier in the model. The classifier takes the attended sequence representation and the numerical feature vector, and returns a probability value with the sigmoid activation function.
-
-
-
-The trained model weights are saved in:
-
-
-
-models/bilstm_model.pth
-
-
-
-During inference, the model is loaded in firewall/predict.py. The model can be deployed locally on the CPU without requiring GPUs for demonstration.
+D. Prediction Pipeline
+The prediction pipeline is implemented in firewall/predict.py. It performs the following operations:
+1. Receives URL, request content, and HTTP method.
+2. Applies rule-based signature checking.
+3. Extracts numerical features from the request.
+4. Converts URL and content into a character-level token sequence.
+5. Passes the sequence and numerical features to the trained Bi-LSTM model.
+6. Generates label, confidence score, attack probability, extracted features, and detection method.
+If the rule-based layer detects a known attack signature, the system immediately returns an attack label with high confidence. If no rule is matched, the Bi-LSTM model performs the final classification.
+E. Flask WAF Prototype
+The Flask prototype is implemented in firewall/app.py. It exposes the following routes:
+
+<table>
+
+The /inspect endpoint accepts JSON input in the following format:
+<code> 
+If the request is malicious, the WAF returns a blocked response with HTTP status code 403. If the request is normal, it returns an allowed response with HTTP status code 200.
+F. Dashboard Interface
+A browser-based dashboard is implemented using HTML, CSS, and JavaScript in:
+firewall/templates/dashboard.html
+The dashboard allows users to test HTTP requests manually. It also provides quick test buttons for normal requests, SQL injection, XSS, and path traversal examples. The dashboard displays recent request logs, including timestamp, HTTP method, URL, decision, and confidence value.
+Figure Reference
+Fig. 3. Flask dashboard interface for testing HTTP requests and viewing WAF decisions.
+Image path: firewall/templates/dashboard.html
+G. Testing
+An end-to-end test script is provided in:
+firewall/test_waf.py
+The test script sends normal and malicious requests to the /inspect endpoint and checks whether the WAF returns the expected decision. The test cases include normal GET requests, normal POST login, SQL injection, XSS, path traversal, and command injection payloads.
+H. Deployment Flow
+The WAF prototype can be started using the Flask application. Once running, users can access the dashboard and send test requests for inspection. The system logs each request and shows whether it was allowed or blocked.
+The implementation demonstrates how the trained Bi-LSTM model can be integrated into a real-time WAF environment and used for practical HTTP request inspection.
+  10. RESULTS AND DISCUSSION
+The proposed Intelligent WAF is evaluated using standard binary classification metrics, including accuracy, precision, recall, F1-score, ROC-AUC, and false positive rate. The performance of the proposed Bi-LSTM model is compared with the LSTM baseline, Transformer model, and ModSecurity CRS v3.
+A. Evaluation Metrics
+The following metrics are used for performance evaluation:
+* Accuracy: Measures the overall percentage of correctly classified requests.
+* Precision: Measures how many requests classified as attacks are actually attacks.
+* Recall: Measures how many actual attacks are correctly detected.
+* F1-score: Harmonic mean of precision and recall.
+* ROC-AUC: Measures the model’s ability to distinguish between normal and attack traffic across thresholds.
+* False Positive Rate (FPR): Measures the percentage of normal requests incorrectly classified as attacks.
+For a WAF system, false positive rate is especially important because incorrectly blocking legitimate users can reduce usability and affect business operations.
+B. Model Performance Comparison
+The experimental results show that the proposed Bi-LSTM model achieves the best overall performance among all evaluated systems.
+Table II
+Performance Comparison of WAF Detection Models
+
+Figure Reference
+Fig. 4. Performance comparison of LSTM, Bi-LSTM, Transformer, and ModSecurity.
+Image path: results/plots/comparison_bar_chart.png
+ C. Discussion of Results
+The proposed Bi-LSTM model achieves 96.02% accuracy, which is higher than the LSTM baseline, Transformer model, and ModSecurity CRS v3. The Bi-LSTM also achieves the highest precision of 99.53%, showing that very few normal requests are incorrectly classified as attacks. This is important for a WAF because excessive false positives can block legitimate users.
+The Bi-LSTM model achieves an F1-score of 94.92%, indicating a strong balance between precision and recall. Its ROC-AUC value of 99.50% shows that the model can effectively distinguish between normal and malicious HTTP requests across different classification thresholds.
+The LSTM baseline performs significantly lower than the proposed Bi-LSTM. This shows that single-direction sequence processing is not sufficient to capture all request patterns effectively. The Transformer model performs better than the LSTM baseline but still remains below the Bi-LSTM. This may be because the CSIC 2010 dataset is moderate in size, and the Bi-LSTM model is more effective for learning sequential character-level patterns in this dataset.
+D. False Positive Rate Analysis
+False positive rate is one of the most critical metrics for WAF evaluation. ModSecurity CRS v3 shows a false positive rate of 10.00%, while the proposed Bi-LSTM achieves only 0.30%. This represents a major improvement because the proposed model reduces unnecessary blocking of legitimate traffic.
+Figure Reference
+Fig. 5. False positive rate comparison between ModSecurity, LSTM, Transformer, and Bi-LSTM.
+Image path: results/plots/fpr_comparison.png
+The low false positive rate indicates that the proposed model is highly precise in identifying malicious traffic while allowing normal requests. This makes the system more suitable for real-world WAF deployment, where both security and usability are important.
+E. Confusion Matrix Analysis
+The Bi-LSTM confusion matrix provides a detailed view of classification results on the test dataset.
+Bi-LSTM Test Set Results:
+
+<table>
+
+Only 16 normal requests are incorrectly blocked out of 5,400 normal test requests. This confirms the model’s strong ability to reduce false alarms. The model correctly detects 3,411 attack requests, showing strong attack detection capability.
+Figure Reference
+Fig. 6. Confusion matrix of the proposed Bi-LSTM model.
+Image path: results/plots/bilstm_confusion_matrix.png
+F. ROC Curve Analysis
+The ROC curve compares the discrimination capability of the models. The proposed Bi-LSTM achieves the highest ROC-AUC score of 99.50%, followed by the Transformer model with 98.53%. This shows that both models can distinguish normal and attack traffic effectively, but the Bi-LSTM provides the best separation.
+Figure Reference
+Fig. 7. ROC curve comparison of deep learning models.
+Image path: results/plots/roc_comparison.png
