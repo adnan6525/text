@@ -1,45 +1,27 @@
-## XIII. REFERENCES
+III. Dataset and Methodology
+A. Dataset Description
+The primary corpus used in this study is the Medical Question Answering Dataset (MedQuAD), introduced by Ben Abacha and Demner-Fushman [4]. MedQuAD is a large-scale, institutionally curated collection of medical question-answer pairs sourced from twelve trusted health information providers operated under the National Institutes of Health (NIH), including MedlinePlus, Genetics Home Reference, and the National Cancer Institute, among others. The dataset encompasses a diverse range of medical topics spanning rare diseases, common conditions, genetic disorders, and chronic illnesses, with questions categorized into structured intent clusters such as symptoms, treatments, causes, diagnosis, prognosis, susceptibility, and general disease information.
+In its processed form used in this study, the MedQuAD corpus comprises 16,345 question-answer pairs, each annotated with an intent label corresponding to its primary information need category. Each record contains a question field, an answer field, a focus area identifying the medical condition or topic, and an intent cluster label. The retrieval corpus was constructed by concatenating the question and answer fields of each record, producing a single unified text representation per document. This concatenation strategy was applied consistently across both the TF-IDF and SBERT retrieval systems to ensure a fair and directly comparable evaluation, following standard practice in document retrieval literature [8].
+The dataset was partitioned into training, validation, and test splits using pre-defined index arrays stored in a serialized NumPy archive. The test split comprised 2,452 documents, from which the paraphrased evaluation queries were derived.
 
-[1] OWASP Foundation, “OWASP Top 10:2021,” 2021. [Online]. Available: https://owasp.org/Top10/
+B. Paraphrased Query Construction
+A central methodological contribution of this study is the construction of a structured paraphrased test query set designed to evaluate retrieval robustness under realistic query variability. For each of the 2,452 test documents, two distinct natural language paraphrases of the original query were generated, yielding a total evaluation set of 4,865 paraphrased queries. Each paraphrased query was constructed to preserve the semantic intent of the original query while varying its surface lexical form, syntactic structure, and degree of formality.
+The paraphrase construction followed a structured protocol stratified by intent cluster, ensuring that paraphrases across symptom-oriented, treatment-oriented, and general information queries each reflected domain-appropriate naturalistic reformulation patterns. For example, the original clinical query "What are the symptoms of Craniosynostosis-mental retardation syndrome of Lin and Gettig?" was paraphrased as "How would I know if my child has Craniosynostosis-mental retardation syndrome of Lin and Gettig? What are the telltale signs?" and "If someone is affected by Craniosynostosis-mental retardation syndrome of Lin and Gettig, what symptoms would they likely experience?" — both preserving the underlying information need while substantially altering lexical composition.
+Each record in the paraphrased query set contains the following fields: the paraphrased query text, the original query text, the ground truth document index within the full corpus, the medical focus area, the intent cluster label, and the paraphrase number (1 or 2). This structured format enables fine-grained analysis of retrieval performance across intent categories and paraphrase instances, supporting both aggregate metric computation and targeted failure analysis.
 
-[2] OWASP Foundation, OWASP Core Rule Set, 2026. [Online]. Available: https://owasp.org/www-project-modsecurity-core-rule-set/
+C. Retrieval Corpus Construction
+The retrieval corpus was constructed from the complete MedQuAD dataset of 16,345 records rather than the test split alone, reflecting a realistic deployment scenario in which a retrieval system must identify the correct document from among the full collection. For each record, the corpus document was formed as:
+document_i = question_i ⊕ answer_i
+where ⊕ denotes string concatenation with a single whitespace separator. Missing values in either field were replaced with empty strings prior to concatenation. This produced a corpus of 16,345 documents, each representing the complete informational content of a MedQuAD record. Both retrieval systems — TF-IDF and SBERT — operated over this identical corpus, ensuring that observed performance differences are attributable solely to the retrieval method rather than corpus construction choices.
 
-[3] OWASP ModSecurity, “ModSecurity Reference Manual”, 2026. [Online]. Available: https://github.com/owasp-modsecurity/ModSecurity/wiki/Reference-Manual-%28v2.x%29
-
-[4] B. R. Dawadi, B. Adhikari, and D. K. Srivastava, “Deep Learning Technique-Enabled Web Application Firewall for the Detection of Web Attacks,” *Sensors*, vol. 23, no. 4, Art. no. 2073, 2023, doi: 10.3390/s23042073.
-
-[5] Y. Pan, F. Sun, Z. Teng *et al*., “Detecting web attacks with end-to-end deep learning,” *Journal of Internet Services and Applications*, vol. 10, Art. no. 16, 2019, doi: 10.1186/s13174-019-0115-x.
-
-[6] X. Kuang, M. Zhang, H. Li, G. Zhao, H. Cao, Z. Wu, X. Wang, “DeepWAF: Detecting Web Attacks Based on CNN and LSTM Models,” in Springer, Cyberspace Safety and Security, 2020, p. 121-136.
-
-[7] J. Li, Y. Fu, J. Xu, C. Ren, X. Xiang, and J. Guo, “Web Application Attack Detection Based on Attention and Gated Convolution Networks,” vol. 8, of IEEE Access, pp., 2017. 20717-20724, 2020, doi: 10.1109/ACCESS.2019.2955674.
-
-[8] A. Tekerek, “A novel architecture for web-based attack detection using convolutional neural network,” *Computers & Security*, vol. 100, Art. no. 102096, 2021, doi: 10.1016/j.cose.2020.102096.
-
-[9] T. Alma and M. L. Das, “Web Application Attack Detection using Deep Learning,” arXiv:2011.03181, 2020, doi: 10.48550/arXiv.2011.03181.
-
-[10] S. Toprak, and A. G. Yavuz, “Web Application Firewall Based on Anomaly Detection using Deep Learning,” Acta Infologica, vol. 6, no. 2, pp. 219-244, 2022, doi: 10.26650/acin.1039042.
-
-11. W. B. Shahid, B. Aslam, H. Abbas, S. B. Khalid and H. Afzal, "An enhanced deep learning based framework for web attacks detection, mitigation and attacker profiling," Journal of Network and Computer Applications, vol. 198, Art. no. 103270, 2022, doi: 10.1016/j.jnca.2021.103270.
-
-[12] R. L. Alaoui and E. H. Nfaoui, “Deep Learning for Vulnerability and Attack Detection on Web Applications: A Systematic Literature Review,” Future Internet, vol. 14, no. 4, Art. no. 118, 2022, doi: 10.3390/fi14040118.
-
-T. Sureda Riera, J. R. Bermejo Higuera, J. Bermejo Higuera, J. J. Martínez Herraiz, and J. A. Sicilia Montalvo, “Prevention and Fighting against Web Attacks using Anomaly Detection Technology: A Systematic Review,” Sustainability, vol. 12, no. 12, Art. no. 4945, 2020, doi: 10.3390/su12124945.
-
-[14] R. L. Alaoui and E. H. Nfaoui, “Web attacks detection using stacked generalization ensemble for LSTMs and word embedding,” *Procedia Computer Science*, vol. 215, pp. . 687-696, 2022, doi: 10.1016/j.procs.2022.12.070.
-
-[15] H. Sun, Y. Du, and Q. Li, “Deep Learning-Based Detection Technology for SQL Injection Research and Implementation,” *Applied Sciences*, vol. 13, no. 16, Art. no. 9466, 2023, doi: 10.3390/app13169466.
-
-[16] K. Kuppa, A. Dayal, S. Gupta, A. Dua, P. Chaudhary, and S. Rathore, “ConvXSS: A deep learning-based smart ICT framework against code injection attacks for HTML5 web applications in sustainable smart city infrastructure,” *Sustainable Cities and Society*, vol. 80, Art. no. 103765, 2022, doi: 10.1016/j.scs.2022.103765.
-
-[17] V. Babaey and H. R. Faragardi, “Detecting Zero-Day Web Attacks with an Ensemble of LSTM, GRU, and Stacked Autoencoders,” *Computers*, vol. 14, no. 6, Art. no. 205, 2025, doi: 10.3390/computers14060205.
-
-[18] A. Kim, M. Park, and D. H. Lee, “AI-IDS: Application of Deep Learning to Real-Time Web Intrusion Detection,” IEEE Access, vol. 8, pp. 70245-70261, 2020, doi: 10.1109/ACCESS.2020.2986882.
-
-[19] A. Moradi Vartouni, M. Teshnehlab, and S. Sedighian Kashi, “Leveraging deep neural networks for anomaly-based web application firewall,” IET Information Security, vol. 13, no. 4, pp. 352-361, 2019, doi: 10.1049/iet-ifs.2018.5404.
-
-[20] C. Eunaicy, “Web attack detection using deep learning models”, Materials Today: Proceedings, vol. 62, p. 4806-4813, 2022, doi: 10.1016/j.matpr.2022.03.348.
-
-[21] J. L. Leevy and T. M. Khoshgoftaar, “A survey and analysis of intrusion detection models based on CSE-CIC-IDS2018 Big Data,” *Journal of Big Data*, vol. 7, Art. no. 104, 2020, doi: 10.1186/s40537-020-00382-x.
-
-[22] A. Paszke, S. Gross, F. Massa and others, “PyTorch: An Imperative Style, High-Performance Deep Learning Library”, in the Proceedings of Advances in Neural Information Processing Systems, 2019. [Online]. Available: https://arxiv.org/abs/1912.01703
+D. Evaluation Metrics
+Retrieval performance was assessed using a comprehensive suite of standard information retrieval and binary classification metrics, selected to provide complementary perspectives on system behavior.
+Precision@K (P@K): For each query, Precision@K measures whether the ground truth document appears within the top-K ranked results returned by the retrieval system. Formally, for a single query q with ground truth document g and ranked result list R:
+P@K(q)=1ifg∈R[:K],else0
+Precision@K was computed for K ∈ {1, 3, 5, 10}, and macro-averaged across all 4,865 evaluation queries. P@1 serves as the primary metric, reflecting the practical requirement that the correct document be ranked first for immediate retrieval utility.
+Mean Reciprocal Rank (MRR): MRR measures the average reciprocal of the rank position at which the ground truth document first appears in the ranked result list. For a query set Q:
+MRR = (1/|Q|) Σ (1/rank_q)
+MRR penalizes systems that rank the correct document lower, providing a more nuanced measure of retrieval quality than binary hit metrics alone [6].
+F1-Score: Treating top-1 retrieval as a binary classification problem — where a successful retrieval (P@1 = 1) constitutes a true positive and a failure constitutes a false negative — the F1-Score was computed as the harmonic mean of precision and recall over the evaluation set. This metric contextualizes retrieval performance within a classification framework and enables comparison with prior binary classification literature [19].
+ROC-AUC and Average Precision (AP): The top-1 similarity score produced by each retrieval system was used as a continuous probability estimate for computing the Receiver Operating Characteristic curve and its Area Under the Curve (ROC-AUC). Average Precision summarizes the Precision-Recall curve as a weighted mean of precision values at each recall threshold, providing a threshold-independent measure of retrieval quality [19].
+Failure Rate: The proportion of queries for which the ground truth document was not ranked first (P@1 = 0), reported as a percentage to directly characterize top-1 retrieval reliability.
